@@ -1886,31 +1886,10 @@
     </div>
 </div>
 
-<!-- Firebase SDK -->
-<script type="module">
-// Import Firebase
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-// Firebase configuration - REPLACE WITH YOUR OWN CONFIG
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Brand-specific localStorage prefix
-const BRAND_PREFIX = 'wvc_';
-
+<!-- Simple Local Storage - No Firebase -->
+<script>
 // Global state
-let currentUser = null;
+let currentUser = { uid: 'local-user', email: 'you@womenvschaos.com' };
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 let currentDay = new Date().getDate();
@@ -1951,73 +1930,73 @@ const OPTIMAL_TIMES = {
 };
 
 // ============================================
-// AUTH
+// AUTH CHECK
 // ============================================
-// Auth state listener
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // User is signed in
-        currentUser = user;
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboardScreen').style.display = 'block';
-        document.getElementById('userEmail').textContent = user.email;
-        
-        // Load notes from localStorage
-        const savedNotes = localStorage.getItem(BRAND_PREFIX + 'notes');
-        if (savedNotes) {
-            document.getElementById('generalNotes').value = savedNotes;
-        }
-        
-        // Render initial calendar
-        renderTodos();
-        updateTodaysFocus();
-        renderSnippets();
-        renderHashtagSets();
-        
-        // Set day view as default showing today
-        const today = new Date();
-        currentCalendarView = 'day';
-        currentDay = today.getDate();
-        currentMonth = today.getMonth();
-        currentYear = today.getFullYear();
-        
-        // Set active view button
-        document.getElementById('btnViewDay').classList.add('active');
-        document.getElementById('btnViewWeek').classList.remove('active');
-        document.getElementById('btnViewMonth').classList.remove('active');
-        
-        // Render calendar
-        renderCalendar();
-    } else {
-        // User is signed out
-        document.getElementById('loginScreen').style.display = 'flex';
-        document.getElementById('dashboardScreen').style.display = 'none';
-    }
-});
+// Check if logged in from index, or if #skipauth is in URL, or show login
+if (window.location.hash === '#skipauth' || localStorage.getItem('calendarAuth') === 'true') {
+    // Show dashboard
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboardScreen').style.display = 'block';
+    document.getElementById('userEmail').textContent = localStorage.getItem('calendarUser') || 'user@example.com';
+} else if (window.location.pathname.includes('index.html') || document.referrer.includes('index.html')) {
+    // Came from index but not logged in - redirect
+    window.location.href = 'index.html';
+} else {
+    // Opened directly - show login screen instead of redirecting
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('dashboardScreen').style.display = 'none';
+}
 
-// Login form
+// Login form handler (for when opened directly)
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const errorDiv = document.getElementById('loginError');
     
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
+    // Simple check - just show dashboard (no real auth in standalone mode)
+    if (email && password) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+        document.getElementById('userEmail').textContent = email;
         errorDiv.textContent = '';
-    } catch (error) {
-        errorDiv.textContent = error.message;
+    } else {
+        errorDiv.textContent = 'Please enter email and password';
     }
 });
 
+// Load notes from localStorage
+const savedNotes = localStorage.getItem('wvc_notes');
+if (savedNotes) {
+    document.getElementById('generalNotes').value = savedNotes;
+}
+
+// Render initial calendar
+renderTodos();
+updateTodaysFocus();
+renderSnippets();
+renderHashtagSets();
+
+// Set day view as default showing today
+const today = new Date();
+currentCalendarView = 'day';
+currentDay = today.getDate();
+currentMonth = today.getMonth();
+currentYear = today.getFullYear();
+
+// Set active view button
+document.getElementById('btnViewDay').classList.add('active');
+document.getElementById('btnViewWeek').classList.remove('active');
+document.getElementById('btnViewMonth').classList.remove('active');
+
+// Render calendar
+renderCalendar();
+
 // Logout button
-document.getElementById('btnLogout').addEventListener('click', async () => {
-    if (confirm('Log out?')) {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
+document.getElementById('btnLogout').addEventListener('click', () => {
+    if (confirm('Clear all data and log out?')) {
+        localStorage.clear();
+        location.reload();
     }
 });
 
