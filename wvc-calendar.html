@@ -1542,25 +1542,6 @@
 <body>
 
 <!-- LOGIN SCREEN -->
-<div id="loginScreen">
-    <div class="login-container">
-        <h1>Women vs. Chaos</h1>
-        <p>Content Planner</p>
-        <div id="loginError" class="error-message"></div>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit" class="btn-login">Login</button>
-        </form>
-    </div>
-</div>
-
 <!-- DASHBOARD SCREEN -->
 <div id="dashboardScreen">
     <!-- Header -->
@@ -1932,38 +1913,9 @@ const OPTIMAL_TIMES = {
 // ============================================
 // AUTH CHECK
 // ============================================
-// Check if logged in from index, or if #skipauth is in URL, or show login
-if (window.location.hash === '#skipauth' || localStorage.getItem('calendarAuth') === 'true') {
-    // Show dashboard
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboardScreen').style.display = 'block';
-    document.getElementById('userEmail').textContent = localStorage.getItem('calendarUser') || 'user@example.com';
-} else if (window.location.pathname.includes('index.html') || document.referrer.includes('index.html')) {
-    // Came from index but not logged in - redirect
-    window.location.href = 'index.html';
-} else {
-    // Opened directly - show login screen instead of redirecting
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('dashboardScreen').style.display = 'none';
-}
-
-// Login form handler (for when opened directly)
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const errorDiv = document.getElementById('loginError');
-    
-    // Simple check - just show dashboard (no real auth in standalone mode)
-    if (email && password) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboardScreen').style.display = 'block';
-        document.getElementById('userEmail').textContent = email;
-        errorDiv.textContent = '';
-    } else {
-        errorDiv.textContent = 'Please enter email and password';
-    }
-});
+// Just show dashboard immediately - no login required
+document.getElementById('dashboardScreen').style.display = 'block';
+document.getElementById('userEmail').textContent = 'you@womenvschaos.com';
 
 // Load notes from localStorage
 const savedNotes = localStorage.getItem('wvc_notes');
