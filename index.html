@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Calendars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700&family=Philosopher:ital,wght@0,400;0,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-teal: #1a5f5f;
+            --soft-sage: #a3b899;
+            --cream: #f2ebe0;
+            --plum: #6b3a5b;
+            --dusty-mauve: #c9a9a6;
+            --light-mauve: #e0d2d0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Philosopher', serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-mauve) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-family: 'Lobster Two', cursive;
+            font-size: 3rem;
+            color: var(--dark-teal);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: var(--plum);
+        }
+        
+        .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .brand-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .brand-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .brand-card h2 {
+            font-family: 'Lobster Two', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .brand-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        
+        .brand-card .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .wvc {
+            border-top: 5px solid var(--dark-teal);
+        }
+        
+        .wvc h2 {
+            color: var(--dark-teal);
+        }
+        
+        .wvc .btn {
+            background: var(--dark-teal);
+        }
+        
+        .wvc .btn:hover {
+            background: var(--soft-sage);
+        }
+        
+        .mrc {
+            border-top: 5px solid #b89ca8;
+        }
+        
+        .mrc h2 {
+            color: #8b6f7d;
+        }
+        
+        .mrc .btn {
+            background: #b89ca8;
+            color: white;
+        }
+        
+        .mrc .btn:hover {
+            background: #a68896;
+        }
+        
+        .ef {
+            border-top: 5px solid var(--plum);
+        }
+        
+        .ef h2 {
+            color: var(--plum);
+        }
+        
+        .ef .btn {
+            background: var(--plum);
+        }
+        
+        .ef .btn:hover {
+            background: var(--dusty-mauve);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .brand-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .brand-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Content Calendars</h1>
+            <p>Select your brand to manage content</p>
+        </div>
+        
+        <div class="brand-grid">
+            <a href="wvc-calendar.html" class="brand-card wvc">
+                <h2>Women vs. Chaos</h2>
+                <p>Self-devotion for women ready to build unshakeable self-trust</p>
+                <span class="btn">Open Calendar</span>
+            </a>
+            
+            <a href="mrc-calendar.html" class="brand-card mrc">
+                <h2>MyReliaCare</h2>
+                <p>Professional pet care services in Northern Kentucky</p>
+                <span class="btn">Open Calendar</span>
+            </a>
+            
+            <a href="ef-calendar.html" class="brand-card ef">
+                <h2>Eclipsed Faith</h2>
+                <p>Countering right-wing propaganda, misinformation, and Christian nationalism</p>
+                <span class="btn">Open Calendar</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
